@@ -57,3 +57,8 @@ hduser@praveenkv:~$ echo $date_v
 To Get latest file name from Direstory :
 
 ls -t  /home/hduser/Desktop/  | head -n1
+
+To Get latest file wit specific extention  from Direstory :
+
+ls -t /home/hduser/Desktop/*.csv| head -n1
+
