@@ -1,0 +1,57 @@
+Loading CSV Data into Hive Table:
+
+Procedure 1: Through Staging Table
+
+CREATE TABLE emp_details_staging (
+emp_name STRING,
+emp_id     STRING,
+emp_salary INT) 
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+tblproperties("skip.header.line.count"="1");
+
+
+LOAD DATA LOCAL INPATH '/home/hduser/Desktop/emp_details.csv' INTO TABLE emp_details_staging;
+
+
+
+CREATE external TABLE emp_details (
+emp_name STRING,
+emp_id     STRING,
+emp_salary INT
+)
+PARTITIONED BY (emp_date INT)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+LOCATION '/user/hive/warehouse/emp_details';
+
+
+INSERT OVERWRITE TABLE emp_details PARTITION(emp_date=20191001) select emp_name,emp_id,emp_salary from emp_details_staging;
+
+
+Procedure 2: Diretly loading into final table
+
+CREATE external TABLE emp_details_direct (
+emp_name STRING,
+emp_id     STRING,
+emp_salary INT
+)
+PARTITIONED BY (emp_date INT)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+LOCATION '/user/hive/warehouse/emp_details_direct';
+
+
+
+LOAD DATA LOCAL INPATH '/home/hduser/Desktop/emp_details.csv' INTO TABLE emp_details_direct PARTITION(emp_date=20191001);
+
+
+
+Linux Commnad to get Date for partition value :
+
+hduser@praveenkv:~$ date_v=$(date '+%Y%m%d')
+hduser@praveenkv:~$ echo $date_v
+20191004
+
+
