@@ -54,4 +54,6 @@ hduser@praveenkv:~$ date_v=$(date '+%Y%m%d')
 hduser@praveenkv:~$ echo $date_v
 20191004
 
+To Get latest file name from Direstory :
 
+ls -t  /home/hduser/Desktop/  | head -n1
